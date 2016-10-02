@@ -1,4 +1,4 @@
-%% MAIN Program for PGD computational vadevecum generation
+%% MAIN Program for PGD computational vademecum generation
 close all; clear; clc;
 warning('off','all')
 %% Data for 1D parametric Problem
