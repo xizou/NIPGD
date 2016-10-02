@@ -25,7 +25,7 @@ end
 K_1 = load('K_1_STIF1.mtx'); K_1 = spconvert(K_1);
 K_2 = load('K_2_STIF1.mtx'); K_2 = spconvert(K_2);
 
-F_amp = -100;      % nodal load value
+F_amp = 100;      % nodal load value
 F_ = get_ld('model.inp',size(K_1,1),F_amp);
 
 %% Loop control parameters
