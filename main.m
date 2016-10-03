@@ -15,10 +15,8 @@ nnd = nel + 1;    % Number of nodes
 %% Data for 3D mechanical Problem
 if not(exist('K_1_STIF1.mtx','file') && exist('K_2_STIF1.mtx','file') ...
        && exist('K_1_X1.sim','file') && exist('K_2_X1.sim','file'))
-    copyfile('K1.inp','K_1.inp');
-    copyfile('K2.inp','K_2.inp');
-    [~] = system('abaqus job=K_1 >K_1.log');
-    [~] = system('abaqus job=K_2 >K_2.log');
+    [~] = system('abaqus job=K_1 input=K1 >K_1.log');
+    [~] = system('abaqus job=K_2 input=K2 >K_2.log');
     delete K_1.* K_2.*
 end
 
