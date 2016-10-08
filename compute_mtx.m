@@ -8,10 +8,10 @@ function [P,M,Q] = compute_mtx(nel,x_min,x_max)
 %   OUTPUT:  P : Mass-like matrix, [(nel+1)*(nel+1)] matrix
 %            M : Mass matrix, [(nel+1)*(nel+1)] matrix
 %            Q : Load-like vector, [(nel+1)*1] vector
-%   Updated on: Oct. 1st, 2016
+%   Updated on: Oct. 8st, 2016
 %   Author: Xi Zou
 %           University of Pavia, Italy
-%           Polytechnic University of Catalunya, Spain
+%           Polytechnic University of Catalonia, Spain
 
 %   This program is free software: you can redistribute it and/or modify
 %   it under the terms of the GNU General Public License as published by

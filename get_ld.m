@@ -11,10 +11,10 @@ function F = get_ld(fName,len,val)
 %           Node number of nodes (nnd) carrying loads will be obtained from
 %           node set nSet-Load. Each node in this set carries a point load
 %           in z direction with value equals to val.
-%   Updated on: Oct. 1st, 2016
+%   Updated on: Oct. 8st, 2016
 %   Author: Xi Zou
 %           University of Pavia, Italy
-%           Polytechnic University of Catalunya, Spain
+%           Polytechnic University of Catalonia, Spain
 
 %   This program is free software: you can redistribute it and/or modify
 %   it under the terms of the GNU General Public License as published by

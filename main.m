@@ -1,6 +1,17 @@
 %% MAIN Program for PGD computational vademecum generation
+%   Updated on: Oct. 8th, 2016
+%   Author: Xi Zou
+%           University of Pavia, Italy
+%           Polytechnic University of Catalonia, Spain
+
+%   This program is free software: you can redistribute it and/or modify
+%   it under the terms of the GNU General Public License as published by
+%   the Free Software Foundation, either version 3 of the License, or
+%   (at your option) any later version.
+
 close all; clear; clc;
 warning('off','all')
+non_intrusive = 0; % Change to 1 if you want to run with non-intrusive option
 %% Data for 1D parametric Problem
 % Range of parameters
 E1_min = 1000; E1_max = 11000;
@@ -13,8 +24,7 @@ nnd = nel + 1;    % Number of nodes
 [P_2,M_2,Q_2] = compute_mtx(nel, E2_min, E2_max);
 
 %% Data for 3D mechanical Problem
-if not(exist('K_1_STIF1.mtx','file') && exist('K_2_STIF1.mtx','file') ...
-       && exist('K_1_X1.sim','file') && exist('K_2_X1.sim','file'))
+if not(exist('K_1_STIF1.mtx','file') && exist('K_2_STIF1.mtx','file'))
     [~] = system('abaqus job=K_1 input=K1 >K_1.log');
     [~] = system('abaqus job=K_2 input=K2 >K_2.log');
     delete K_1.* K_2.*
@@ -71,8 +81,11 @@ for i=1:n
         E2_tilde = full(M1.*P2);
         F_star = full(Q1.*Q2.*F_-R);
 
-%         U = call_abq(E1_tilde,E2_tilde,F_star);  % Non-intrusive
-        U = (E1_tilde.*K_1+E2_tilde*K_2)\F_star; % Intrusive
+        if non_intrusive ==1
+            U = call_abq(E1_tilde,E2_tilde,F_star);  % Non-intrusive
+        else
+            U = (E1_tilde.*K_1+E2_tilde*K_2)\F_star; % Intrusive
+        end
 
         % Update omega_1
         K1 = U'*K_1*U;
@@ -131,7 +144,7 @@ for i=1:n
     end
 end
 
-% Save vademecum to file
+%% Save vademecum to file
 save('vademecum.mat','U','nel', ...
     'E1_min','E1_max','E2_min','E2_max', ...
     'vm_U','vm_omg_1','vm_omg_2','vm_amp')
