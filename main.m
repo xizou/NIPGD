@@ -11,7 +11,7 @@
 
 close all; clear; clc;
 warning('off','all')
-non_intrusive = 0; % Change to 1 if you want to run with non-intrusive option
+non_intrusive = 0; % Change to 1 if you want to run non-intrusively
 %% Data for 1D parametric Problem
 % Range of parameters
 E1_min = 1000; E1_max = 11000;
@@ -38,7 +38,7 @@ F_ = get_ld('model.inp',size(K_1,1),F_amp);
 
 %% Loop control parameters
 err = 1.0e-2; % error limit of Alternative direction
-err_modes = 1.0e-3; % error limit between amplitudes PGD modes
+err_modes = 1.0e-3; % error limit between amplitudes of PGD modes
 n = 10; % maximum modes to search
 iter_max = 10; % maximum iterations for alternative direction
 
@@ -66,16 +66,12 @@ for i=1:n
         P2 = omega_2'*P_2*omega_2;
         M2 = omega_2'*M_2*omega_2;
         Q2 = Q_2'*omega_2;
-        R = zeros(size(U,1),size(U,2)); % Right hand side vector
-
-        for k=1:i-1
-            P1k = omega_1'*P_1*vm_omg_1(:,k);
-            P2k = omega_2'*P_2*vm_omg_2(:,k);
-            M1k = omega_1'*M_1*vm_omg_1(:,k);
-            M2k = omega_2'*M_2*vm_omg_2(:,k);
-            R = R+(P1k.*M2k.*K_1+M1k.*P2k.*K_2)*vm_U(:,k);
-        end
-
+        % Compute r.h.s
+        P1k = omega_1'*P_1*vm_omg_1;
+        P2k = omega_2'*P_2*vm_omg_2;
+        M1k = omega_1'*M_1*vm_omg_1;
+        M2k = omega_2'*M_2*vm_omg_2;
+        R = (K_1*vm_U)*(P1k.*M2k)' + (K_2*vm_U)*(M1k.*P2k)';
         % Output parameters cannot be sparse matrix
         E1_tilde = full(P1.*M2);
         E2_tilde = full(M1.*P2);
@@ -91,15 +87,12 @@ for i=1:n
         K1 = U'*K_1*U;
         K2 = U'*K_2*U;
         F = U'*F_;      % F is a number while F_ is a vector
-        R = zeros(size(omega_1));
-
-        for k=1:i-1
-            K1k = U'*K_1*vm_U(:,k);
-            K2k = U'*K_2*vm_U(:,k);
-            M2k = omega_2'*M_2*vm_omg_2(:,k);
-            P2k = omega_2'*P_2*vm_omg_2(:,k);
-            R = R+(K1k.*M2k.*P_1+K2k.*P2k.*M_1)*vm_omg_1(:,k);
-        end
+        % Compute r.h.s
+        K1k = U'*K_1*vm_U;
+        K2k = U'*K_2*vm_U;
+        M2k = omega_2'*M_2*vm_omg_2;
+        P2k = omega_2'*P_2*vm_omg_2;
+        R = (P_1*vm_omg_1)*(K1k.*M2k)'+(M_1*vm_omg_1)*(K2k.*P2k)';
 
         omega_1 = (K1.*M2.*P_1+K2.*P2.*M_1)\(F.*Q2.*Q_1-R);
 
@@ -107,15 +100,12 @@ for i=1:n
         P1 = omega_1'*P_1*omega_1;
         M1 = omega_1'*M_1*omega_1;
         Q1 = Q_1'*omega_1;
-        R = zeros(size(omega_2));
-
-        for k=1:i-1
-            K1k = U'*K_1*vm_U(:,k);
-            K2k = U'*K_2*vm_U(:,k);
-            P1k = omega_1'*P_1*vm_omg_1(:,k);
-            M1k = omega_1'*M_1*vm_omg_1(:,k);
-            R = R+(K1k.*P1k.*M_2+K2k.*M1k.*P_2)*vm_omg_2(:,k);
-        end
+        % Compute r.h.s
+        K1k = U'*K_1*vm_U;
+        K2k = U'*K_2*vm_U;
+        P1k = omega_1'*P_1*vm_omg_1;
+        M1k = omega_1'*M_1*vm_omg_1;
+        R = (M_2*vm_omg_2)*(K1k.*P1k)'+(P_2*vm_omg_2)*(K2k.*M1k)';
 
         omega_2 = (K1.*P1.*M_2+K2.*M1.*P_2)\(F.*Q1.*Q_2-R);
         % Compute amplitude
@@ -133,10 +123,10 @@ for i=1:n
     end
 
     % Save new mode to vademecum
-    vm_U(:,i)=full(U);
-    vm_omg_1(:,i)=full(omega_1);
-    vm_omg_2(:,i)=full(omega_2);
-    vm_amp(i)=amp(2);
+    vm_U(:,i) = full(U);
+    vm_omg_1(:,i) = full(omega_1);
+    vm_omg_2(:,i) = full(omega_2);
+    vm_amp(i) = amp(2);
 
     % Optional stopping criterion for mode search
     if i>1 && vm_amp(i)/vm_amp(1)<err_modes
