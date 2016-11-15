@@ -41,7 +41,7 @@ By default, non-intrusive option is deactivated, so that you may run it without 
 
 You may run the main file in both in Matlab interface or in terminal.
 
-- In Matlab interface: `>>main`
+- In Matlab interface: `>> main`
 - In terminal: `$ matlab -nodisplay -nojvm << main.m`
 
 ## Result and post-processing
