@@ -39,7 +39,7 @@ end
 fclose(fLoad);
 
 % Run analysis via system call
-[~] = system('abaqus job=job input=template >job.log');
+[~,~] = system('abaqus job=job input=template >job.log');
 
 % Load results from output file
 Ut = load_fil('job.fil');

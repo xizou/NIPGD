@@ -24,9 +24,12 @@ nnd = nel + 1;    % Number of nodes
 [P_2,M_2,Q_2] = compute_mtx(nel, E2_min, E2_max);
 
 %% Data for 3D mechanical Problem
+if non_intrusive == 1
+    delete *.mtx
+end
 if not(exist('K_1_STIF1.mtx','file') && exist('K_2_STIF1.mtx','file'))
-    [~] = system('abaqus job=K_1 input=K1 >K_1.log');
-    [~] = system('abaqus job=K_2 input=K2 >K_2.log');
+    [~,~] = system('abaqus job=K_1 input=K1 >K_1.log');
+    [~,~] = system('abaqus job=K_2 input=K2 >K_2.log');
     delete K_1.* K_2.*
 end
 
