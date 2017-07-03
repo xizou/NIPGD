@@ -1,5 +1,5 @@
 # NIPGD
-An example code of NIPGD scheme.
+An example code of Non-Intrusive Proper Generalized Decomposition (NIPGD) scheme. PGD is one of the approaches for model order reduction. See [Chinesta 2013](http://doi.org/10.1007/s11831-013-9080-x).
 
 ## Requirements
 
@@ -53,3 +53,13 @@ Goto folder `post` and run Matlab file `online_plot.m` for post-processing.
 Displacement components for Node 100:
 
 ![Model](https://raw.githubusercontent.com/xizou/NIPGD/master/image/result.png)
+
+## License and citation
+
+This code is distributed under GNU General Public License v3.0.
+
+- Permissions of this strong copyleft license are conditioned on making available complete source code of licensed works and modifications, which include larger works using a licensed work, under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights.
+
+If you find it useful for your work, please cite as follows:
+
+- Zou, X., Conti, M., Diez, P., & Auricchio, F. (2017). A non-intrusive proper generalized decomposition scheme with application in biomechanics. *International Journal for Numerical Methods in Engineering*. http://doi.org/10.1002/nme.5610
