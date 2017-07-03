@@ -48,7 +48,14 @@ You may run the main file in both in Matlab interface or in terminal.
 
 You should obtain `vademecum.mat` after running the code.
 
-Goto folder `post` and run Matlab file `online_plot.m` for post-processing.
+Goto folder `post` and run Matlab file `online_plot.m` for post-processing:
+
+```matlab
+cd post
+online_plot.m
+```
+
+
 
 Displacement components for Node 100:
 
