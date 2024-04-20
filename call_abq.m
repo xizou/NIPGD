@@ -70,10 +70,30 @@ fclose(fID);
 
 C = C{1};
 j = 1;
+
+% Acquire the number of nodes from the .fil file
+header = C{1};
+st = strfind(header, 'I');
+st = st(end);
+ed = strfind(header, 'D');
+A = header(st:ed);
+A = A(~isspace(A));
+A = A(2:end-1);
+
+% Pre-allocate F
+if length(A)-1 == sscanf(A(1), '%d')
+    F = zeros(sscanf(A(2:end), '%d'), 3);
+elseif length(A)-2 == sscanf(A(2:3), '%d')
+    F = zeros(sscanf(A(3:end), '%d'), 3);    
+else
+    error('Not implemented for such a huge model...')
+end
+
+% Read data for F
 for i=1:size(C,1)
     A = C{i};
     A = A(~isspace(A));
-    if strfind(A,'I16I3101I')
+    if contains(A,'I16I3101I') || contains(A,'I19I3101I')
         st = strfind(A,'D');
         A(st(1:2:end)) = ',';
         data = textscan(A(st(1)+1:end),'%f,%f,%f');
